@@ -1,0 +1,17 @@
+{
+    "name": "mongodb-demo",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+        "test": "jest --color --coverage"
+    },
+    "author": "Zico Deng",
+    "license": "ISC",
+    "dependencies": {},
+    "devDependencies": {
+        "express": "^4.16.2",
+        "jest": "^21.2.1",
+        "mongodb": "^2.2.33"
+    }
+}
