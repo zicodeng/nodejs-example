@@ -17,6 +17,7 @@ const [host, port] = addr.split(':');
 const portNum = parseInt(port);
 
 // Adding the Middleware.
+// ORDER MATTERS!
 
 // As opposed to middleware in Go,
 // each of these middleware handler functions are being added
@@ -33,22 +34,6 @@ const portNum = parseInt(port);
 app.use(express.json());
 // Add the request logging middleware.
 app.use(morgan('dev'));
-
-// Error Handling.
-
-// Error handler will be called if
-// any handler earlier in the chain throws
-// an exception or passes an error to next().
-app.use((err, req, res, next) => {
-    // Write a stack trace to standard out,
-    // which writes to the server's log.
-    console.error(err.stack);
-
-    // But only report the error message
-    // to the client, with a 500 status code.
-    res.set('Content-Type', 'text/plain');
-    res.status(500).send(err.message);
-});
 
 // Adding specific resource Handlers.
 
@@ -88,6 +73,22 @@ app.get('/channels/:chanid', (req, res, next) => {
     // Actual channel ID value is in req.params.chanid
     res.set('Content-Type', 'text/plain');
     res.send(`Channel number: ${req.params.chanid}`);
+});
+
+// Error Handling.
+
+// Error handler needs to be placed at the END.
+// It will be called if any handler earlier in the chain throws
+// an exception or passes an error to next().
+app.use((err, req, res, next) => {
+    // Write a stack trace to standard out,
+    // which writes to the server's log.
+    console.error(err.stack);
+
+    // But only report the error message
+    // to the client, with a 500 status code.
+    res.set('Content-Type', 'text/plain');
+    res.status(500).send(err.message);
 });
 
 // Start Listening for Requests.
